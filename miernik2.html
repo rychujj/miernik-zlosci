@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miernik Złości</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .meter {
+            width: 300px;
+            height: 30px;
+            background: #555;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        .meter-bar {
+            height: 100%;
+            background: #ff0000;
+            width: 0;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="meter">
+        <div class="meter-bar" id="meter-bar"></div>
+    </div>
+    <script>
+        let meterLevel = 0;
+        const meterBar = document.getElementById('meter-bar');
+        
+        function increaseMeter() {
+            if (meterLevel < 100) {
+                meterLevel += 20; // Adjust this value as needed
+                meterBar.style.width = meterLevel + '%';
+            }
+            clearTimeout(resetMeterTimeout);
+            resetMeterTimeout = setTimeout(resetMeter, 180000); // 3 minutes in milliseconds
+        }
+
+        function resetMeter() {
+            meterLevel = 0;
+            meterBar.style.width = meterLevel + '%';
+        }
+
+        let resetMeterTimeout = setTimeout(resetMeter, 180000);
+
+        window.addEventListener('message', event => {
+            if (event.data === 'increase_meter') {
+                increaseMeter();
+            }
+        });
+    </script>
+</body>
+</html>
